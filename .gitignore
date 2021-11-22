@@ -1,0 +1,11 @@
+# Compiled files
+build/
+build/*
+
+# Binary file
+d8080
+*.o
+
+# Editors things
+.vscode/
+.ccls_cache/
