@@ -1,6 +1,6 @@
 #ifndef DISSASSEMBLY_H
 #define DISSASSEMBLY_H
-typedef char byte;
+typedef unsigned char byte;
 
 /**
  * Dissasembly a specific byte array, and append the result to the given string.
@@ -10,7 +10,9 @@ typedef char byte;
  *
  * @return 1 if an error ocurried, 0 if not
  */
-int dissasembly(byte[], char*);
+int disassembly(byte[], char*);
 
+
+int decode(byte[], char*);
 
 #endif
