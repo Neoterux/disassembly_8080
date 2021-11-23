@@ -2,6 +2,7 @@ CC=clang
 CFLAGS?=-march=generic -mtune=x86-64 -pipe -Wall
 LDFLAGS=-Isrc/
 CPPFLAGS=
+DFLAGS=
 INCLUDES=$(patsubst %.h,-I%.h,$(wildcard $(SRC_DIR)/*.h))
 SRC_DIR=src
 O_DIR=build
@@ -13,21 +14,26 @@ BIN=d8080
 all: builddir $(BIN) 
 
 builddir:
-	@mkdir build &> /dev/null
+	@mkdir -p $(O_DIR) &> /dev/null
 
 $(BIN): $(OBJS)
 	$(CC) -o $(BIN) $(OBJS)
 
 $(O_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(LDFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $(DFLAGS) $(INCLUDES) -c $< -o $@
 
 .PHONY:debug
-debug:CFLAGS+=-g
-debug:$(BIN)
+debug: clean
+debug: DFLAGS=-g
+debug: clean all
 
 .PHONY:clean
 clean:
 	@echo Removing files from build dir
 	@rm -rf $(O_DIR)
 	@echo removing executable
-	@rm $(BIN)
+	@rm -rf $(BIN) &> /dev/null
+
+.PHONY: sanitize
+sanitize: DFLAGS=-fsanitize=address,undefined
+sanitize: clean all
